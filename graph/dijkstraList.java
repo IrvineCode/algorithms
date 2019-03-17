@@ -1,5 +1,7 @@
 import java.util.*;
 
+//[0, 4, 12, 19, 21, 11, 9, 8, 14]
+
 public class dijkstraList {
     public static void main(String[] args) {
         Graph g = new Graph(9);
@@ -19,25 +21,36 @@ public class dijkstraList {
         g.addEdge(3, 4, 9);
         g.addEdge(4, 5, 10);
 
-        int[] dist = Dijkstra.dijkstra(0, g.g);  // 3 - start point
+        int[] dist = Dijkstra.dijkstra(0, g.edges); // 3 - start point
 
         System.out.println(Arrays.toString(dist));
     }
 }
 
+class Edge {
+    int v;
+    int w;
+
+    Edge(int v, int w) {
+        this.v = v;
+        this.w = w;
+    }
+}
+
 class Graph {
-    List<int[]> edges;
-     final int V;
+    List<Edge>[] edges;
 
     Graph(int v) {
-        V = v;
-        g = new int[V][V];
-        for(int[] row : g) {
-            Arrays.fill(row, Integer.MAX_VALUE);
-        }
+        edges = new ArrayList[v];
     }
+
     void addEdge(int u, int v, int w) {
-        g[u][v] = g[v][u] = w;
+        if (edges[u] == null)
+            edges[u] = new ArrayList<Edge>();
+        if (edges[v] == null)
+            edges[v] = new ArrayList<Edge>();
+        edges[u].add(new Edge(v, w));
+        edges[v].add(new Edge(u, w));
     }
 }
 
@@ -47,7 +60,7 @@ class Dijkstra {
         int minIndex = -1;
         int min = Integer.MAX_VALUE;
 
-        for(int i=0; i < dist.length; i++) {
+        for (int i = 0; i < dist.length; i++) {
             if (dist[i] < min && !completedSet[i]) {
                 min = dist[i];
                 minIndex = i;
@@ -57,10 +70,10 @@ class Dijkstra {
         return minIndex;
     }
 
-    static int[] dijkstra(int start, int[][] g) {
+    static int[] dijkstra(int start, List<Edge>[] edges) {
         boolean[] completedSet;
         int[] dist;
-        int V = g.length;
+        int V = edges.length;
 
         completedSet = new boolean[V];
         dist = new int[V];
@@ -70,18 +83,13 @@ class Dijkstra {
         for (int i = 0; i < V; i++) {
 
             int u = findU(dist, completedSet);
-            if (u < 0) break;
+            if (u < 0)
+                break;
             completedSet[u] = true;
 
-            for(int v=0; v<g[0].length; v++) {
-                if (
-                    g[u][v] != Integer.MAX_VALUE &&
-                            !completedSet[v] &&
-                            dist[u] < Integer.MAX_VALUE &&
-
-                            dist[v] > dist[u] + g[u][v]
-                ) {
-                    dist[v] = dist[u] + g[u][v];
+            for (Edge e : edges[u]) {
+                if (!completedSet[e.v] && dist[e.v] > dist[u] + e.w) {
+                    dist[e.v] = dist[u] + e.w;
                 }
             }
         }
