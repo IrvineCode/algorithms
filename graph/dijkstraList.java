@@ -87,11 +87,12 @@ class Dijkstra {
                 break;
             completedSet[u] = true;
 
-            for (Edge e : edges[u]) {
-                if (!completedSet[e.v] && dist[e.v] > dist[u] + e.w) {
-                    dist[e.v] = dist[u] + e.w;
+            if (edges[u] != null)
+                for (Edge e : edges[u]) {
+                    if (!completedSet[e.v] && dist[e.v] > dist[u] + e.w) {
+                        dist[e.v] = dist[u] + e.w;
+                    }
                 }
-            }
         }
 
         return dist;
