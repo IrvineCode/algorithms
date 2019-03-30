@@ -1,70 +1,121 @@
 import java.util.Arrays;
 
-class UnionFind {
-    public static void main(String[] args) {
-        Edge[] graph = new Edge[3];
-        graph[0] = new Edge(0, 1);
-        graph[1] = new Edge(0, 2);
-        graph[2] = new Edge(0, 3);
-        // graph[3] = new Edge(2, 1);
+// moocast
 
-        UnionFind uf = new UnionFind(graph, 4);
-        System.out.println(uf.isCycle());
+class UnionFind {
+    static class Edge {
+        int u, v;
+        int w;  // weight
+
+        public Edge(int a, int b, int w) {
+            u = a;
+            v = b;
+            this.w = w;
+        }
+
+        @Override
+        public String toString() {
+            return u + " -> " + v;
+        }
+    }
+
+    public static void main(String[] args) {
+        
+        // Kruskals
+        Edge[] graph = {
+            new Edge(0, 1, 2),
+            new Edge(0, 2, 1),
+            new Edge(0, 3, 1),
+            new Edge(2, 3, 1),
+            new Edge(1, 2, 1)
+        };
+        int V = 4;
+        Arrays.sort(graph, (a, b) -> a.w - b.w);
+        System.out.println(Arrays.toString(graph));
+
+        UnionFind uf = new UnionFind(V);
+                
+        int numSets = V;
+        for(Edge e : graph) {
+            if (uf.union(e.u, e.v)) {
+                System.out.println("connecting " + e.u + " - " + e.v);
+                numSets--;
+            } else {
+                System.out.println("skipping " + e.u + " - " + e.v);
+            }
+            System.out.println("---------");
+            
+            if (numSets == 1)
+                break;
+        }
+
+        System.out.println("par: " + Arrays.toString(uf.parent));
+        System.out.println("siz: " + Arrays.toString(uf.size));
+
     }
 
     int[] parent;
-    int[] setSize;
-    int n;
-    Edge[] graph;
+    int[] size;
+    int V;          // number of vertices
 
-    public UnionFind(Edge[] graph, int n) {
-        this.n = n;
-        parent = new int[n];
-        Arrays.fill(parent, -1);
-        this.graph = graph;
-    }
+    public UnionFind(int v) {
+        V = v;
+        parent = new int[v];
+        size = new int[v];
 
-    boolean isCycle() {
-        for (Edge e : graph) {
-            if (find(e.a) == find(e.b))
-                return false;
-            union(e.a, e.b);
+        for (int i = 0; i < V; i++) {
+            parent[i] = i;
+            size[i] = 1;
         }
-        return true;
     }
 
     // find the parent of a
-    int find(int a) {
+    int findRecursion(int a) {
         if (parent[a] == -1)
             return a;
         return find(parent[a]);
     }
 
-    // not using recursion (and with optimization)
-    int find2(int a) {
-        int root = a;
-        while(parent[root] != -1) {
-            root = parent[root];
+    // no recursion + optimization
+    int find(int a) {
+        int cur = a;
+
+        while (parent[cur] != cur) {
+            cur = parent[cur];
         }
-        int ret = root;
+        int root = cur;
 
         // with compression
-        root = a;
-        while(parent[root] != -1) {
-            int next = parent[root];
-            parent[root] = ret;
-            root = next;
+        cur = a;
+        while (parent[cur] != root) {
+            int next = parent[cur];
+            parent[cur] = root;
+            cur = next;
         }
-
-        return ret;
+        return root;
     }
 
-    // TODO use size
-    void union(int a, int b) {
+    boolean union(int a, int b) {
         int pa = find(a);
         int pb = find(b);
-        parent[pa] = pb;
+
+        // check cycle
+        if (pa == pb)
+            return false;
+
+        if (size[pa] > size[pb]) {
+            parent[pb] = pa;
+            size[pa]++;
+            System.out.println(pb + " -> " + pa);
+        }
+        else {
+            parent[pa] = pb;
+            size[pb]++;
+            System.out.println(pa + " -> " + pb);
+        }
+
+        return true;
     }
 
+    
 }
- 
