@@ -6,8 +6,8 @@
 class BITree {
     int BITree[];
 
-    BITree(int[] ar) {
-        BITree = new int[ar.length + 1];
+    BITree(int n) {
+        BITree = new int[n + 1];
     }
 
     int getSum(int index) {
@@ -20,7 +20,7 @@ class BITree {
         return sum;
     }
 
-    public void update(int index, int val) {
+    public void add(int index, int val) {
         index = index + 1;
 
         while (index <= BITree.length) {
@@ -32,7 +32,7 @@ class BITree {
     public static void main(String[] args) {
         int[] ar = { 2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-        BITree tree = new BITree(ar);
+        BITree tree = new BITree(ar.length);
 
         for (int i = 0; i < ar.length; i++) {
             tree.update(i, ar[i]);
