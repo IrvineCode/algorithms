@@ -4,17 +4,17 @@
  */
 
 class BITree {
-    int BITree[];
+    int tree[];
 
     BITree(int n) {
-        BITree = new int[n + 1];
+        tree = new int[n + 1];
     }
 
     int getSum(int index) {
         int sum = 0;
         index = index + 1;
         while (index > 0) {
-            sum += BITree[index];
+            sum += tree[index];
             index -= index & (-index);
         }
         return sum;
@@ -23,8 +23,8 @@ class BITree {
     public void add(int index, int val) {
         index = index + 1;
 
-        while (index <= BITree.length) {
-            BITree[index] += val;
+        while (index <= tree.length) {
+            tree[index] += val;
             index += index & (-index);
         }
     }
@@ -35,11 +35,11 @@ class BITree {
         BITree tree = new BITree(ar.length);
 
         for (int i = 0; i < ar.length; i++) {
-            tree.update(i, ar[i]);
+            tree.add(i, ar[i]);
         }
 
         System.out.println(tree.getSum(5)); // expected: 12
-        tree.update(3, 6); // ar[3] = 6;
+        tree.add(3, 6); // ar[3] = 6;
         System.out.println(tree.getSum(5)); // expected: 18
 
     }
