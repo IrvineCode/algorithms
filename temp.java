@@ -1,29 +1,28 @@
 class temp {
     public static void main(String[] args) {
-        A a = new B();
-        a.fn2();
-        
-        B b = new B();
-        b.fn2();
-    }
-}
-
-class A {
-    int x = 1;
-    void fn1() {
-        System.out.println(x);
+        System.out.println(fly(4));
+        System.out.println(fly(5));
     }
 
-    void fn2() {
-        System.out.println(x);
-        fn1();
+    static int fun(int x) {
+        if (x < 1)
+            return 1;
+        else
+            return x + fun(x - 1) + fun(x - 2);
     }
-}
 
-class B extends A {
-    int x = 2;
-
-    void fn1() {
-        System.out.println(x);
+    static int go(int x) {
+        if (x < 1)
+            return 1;
+        else
+            return x + go(x - 2) + go(x - 3);
     }
+
+    static int fly(int x) {
+        if (x < 1)
+            return 1;
+        else
+            return x + fly(x - 4) + fly(x - 1);
+    }
+
 }
