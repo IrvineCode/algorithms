@@ -29,7 +29,7 @@ class segtree {
       makeSegTree(ar, mid+1, b, i * 2 + 2));
   }
 
-  int query(int a, int b, int aa, int bb, int ti) {
+  int queryMin(int a, int b, int aa, int bb, int ti) {
     if (bb < a || aa > b) {
       return Integer.MAX_VALUE;
     }
@@ -40,8 +40,8 @@ class segtree {
     int mid = aa + (bb - aa) / 2;
 
     return Math.min(
-      query(a, b, aa, mid, ti * 2 + 1),
-      query(a, b, mid+1, bb, ti * 2 + 2)
+      queryMin(a, b, aa, mid, ti * 2 + 1),
+      queryMin(a, b, mid+1, bb, ti * 2 + 2)
     );
   }
 
@@ -56,15 +56,15 @@ class segtree {
     int mid = aa + (bb - aa) / 2;
 
     return 
-      query(a, b, aa, mid, ti * 2 + 1) +
-      query(a, b, mid+1, bb, ti * 2 + 2);
+      querySum(a, b, aa, mid, ti * 2 + 1) +
+      querySum(a, b, mid+1, bb, ti * 2 + 2);
   }
 
   public static void main(String[] args) {
     int[] ar = { 2, 5, 1, 4, 9, 3 };
 
     segtree s = new segtree(ar);
-    int res = s.query(2, 5, 0, ar.length-1, 0);
+    int res = s.querySum(2, 5, 0, ar.length-1, 0);
     System.out.println(res);
   }
 
