@@ -31,6 +31,8 @@ public class dijkstraListPq {
     // START!
     while (!q.isEmpty() && settled.size() < V) {
       int u = q.remove().v;
+      if (settled.contains(u))
+        continue;
       settled.add(u);
 
       // this portion will be different based on graph structure (edge-list, adj-list,
