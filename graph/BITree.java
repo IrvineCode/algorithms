@@ -23,7 +23,7 @@ class BITree {
     public void add(int index, int val) {
         index = index + 1;
 
-        while (index <= tree.length) {
+        while (index < tree.length) {
             tree[index] += val;
             index += index & (-index);
         }
