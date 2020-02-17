@@ -1,7 +1,12 @@
-class Lesson1 {
-  static final int INF = Integer.MAX_VALUE;
+class basics {
+  static final int INF = Integer.MAX_VALUE / 2;
 
   public static void main(String[] args) {
+    System.out.println(doIntersect(new Pt(0, 2), new Pt(10000, 2), new Pt(1, 1), new Pt(10, 3)));
+    System.out.println(doIntersect(new Pt(0, 2), new Pt(10000, 2), new Pt(1, 10), new Pt(-10, 3)));
+  }
+
+  public static void main2(String[] args) {
     System.out.println("// --------------------------------- orientation");
     Pt p1 = new Pt(0, 0);
     Pt p2 = new Pt(4, 4);
@@ -67,22 +72,6 @@ class Lesson1 {
         && c.y <= Math.max(a.y, b.y);
   }
 
-  static int orientation(Pt a, Pt b, Pt c) {
-    int dy = b.y - a.y;
-    int dx = b.x - a.x;
-    int dyy = c.y - b.y;
-    int dxx = c.x - b.x;
-
-    int comp = dy * dxx - dyy * dx;
-
-    if (comp == 0)
-      return 0; // linear
-    else if (comp > 0)
-      return 1; // clockwise
-    else
-      return 2; // counter-clockwise
-  }
-
   static boolean isInside(Pt[] polygon, Pt p) {
     if (polygon.length < 3)
       return false;
@@ -105,6 +94,22 @@ class Lesson1 {
     }
 
     return count % 2 == 1;
+  }
+
+  static int orientation(Pt a, Pt b, Pt c) {
+    int dy = b.y - a.y;
+    int dx = b.x - a.x;
+    int dyy = c.y - b.y;
+    int dxx = c.x - b.x;
+
+    int comp = dy * dxx - dyy * dx;
+
+    if (comp == 0)
+      return 0; // linear
+    else if (comp > 0)
+      return 1; // clockwise
+    else
+      return 2; // counter-clockwise
   }
 
 }

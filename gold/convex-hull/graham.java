@@ -85,7 +85,8 @@ class graham {
 
     // graham's algorithm starts here :|
     for (int i = 3; i < j; i++) {
-      System.out.println("cur: " + hull);
+      if (debug)
+        System.out.println("cur: " + hull);
       while (orientation(hull.get(hull.size() - 2), hull.getLast(), pts[i]) != 2) {
         if (debug)
           System.out.println("pop: " + hull.getLast());
