@@ -21,7 +21,7 @@ class graham {
   }
 
   // assume all pts are unique...
-  static Deque<Pt> convexHull(Pt[] pts) {
+  static LinkedList<Pt> convexHull(Pt[] pts) {
 
     // not a polygon
     if (pts.length < 3)
