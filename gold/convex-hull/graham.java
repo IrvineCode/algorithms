@@ -1,6 +1,8 @@
 import java.util.*;
 
 class graham {
+  static boolean debug = true;
+
   public static void main(String[] args) {
     Pt pts[] = new Pt[7];
     pts[0] = new Pt(0, 3);
@@ -18,6 +20,7 @@ class graham {
     return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
   }
 
+  // assume all pts are unique...
   static Deque<Pt> convexHull(Pt[] pts) {
 
     // not a polygon
@@ -53,12 +56,45 @@ class graham {
       }
     };
     Arrays.sort(pts, 1, pts.length, polarComp);
-    System.out.println(Arrays.toString(pts));
 
-    hull.push(p0);
+    // if multiple pts are collinear, remove all but the farthest
+    int j = 1;
+    for (int i = 1; i < pts.length; i++) {
+      // skip duplicates
+      while (i < pts.length - 1 && orientation(p0, pts[i], pts[i + 1]) == 0)
+        i++;
 
-    return null;
+      pts[j++] = pts[i];
+    }
 
+    if (debug) {
+      for (int i = 0; i < j; i++) {
+        System.out.print(pts[i] + ", ");
+      }
+      System.out.println();
+    }
+
+    // check if there are enough points
+    if (j < 3)
+      return null;
+
+    // return value
+    hull.addLast(pts[0]);
+    hull.addLast(pts[1]);
+    hull.addLast(pts[2]);
+
+    // graham's algorithm starts here :|
+    for (int i = 3; i < j; i++) {
+      System.out.println("cur: " + hull);
+      while (orientation(hull.get(hull.size() - 2), hull.getLast(), pts[i]) != 2) {
+        if (debug)
+          System.out.println("pop: " + hull.getLast());
+        hull.removeLast();
+      }
+      hull.addLast(pts[i]);
+    }
+
+    return hull;
   }
 
   static int orientation(Pt a, Pt b, Pt c) {
