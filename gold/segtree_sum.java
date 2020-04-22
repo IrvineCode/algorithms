@@ -35,8 +35,7 @@ class segtree {
         }
     }
 
-    // [a, b]
-    int makeSegTree(int ar[], int a, int b, int i) {
+    private int makeSegTree(int ar[], int a, int b, int i) {
         // exit condition
         if (a == b)
             return tree[i] = ar[a];
@@ -45,7 +44,8 @@ class segtree {
         int mid = a + (b - a) / 2;
         return tree[i] = makeSegTree(ar, a, mid, i * 2 + 1) + makeSegTree(ar, mid + 1, b, i * 2 + 2);
     }
-
+    
+    // [a, b]
     public int query(int a, int b) {
         return query(a, b, 0, n - 1, 0);
     }
