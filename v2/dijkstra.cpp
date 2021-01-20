@@ -62,8 +62,8 @@ int main()
 
     for (auto next : adj[u])
     {
-      int w = next.first + dist[u];
-      int v = next.second;
+      int v = next.first;
+      int w = next.second  + dist[u];
 
       if (dist[v] == -1 || dist[v] > w)
       {
