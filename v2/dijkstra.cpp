@@ -27,13 +27,13 @@
 using namespace std;
 typedef pair<int, int> pii;
 
-int n, m, k;
+int n, m;
 vector<pii> adj[MAXN];
 ll dist[MAXN];
 
 int main()
 {
-  cin >> n >> m >> k;
+  cin >> n >> m;
 
   int u, v, w;
   for (int i = 0; i < m; i++)
@@ -41,12 +41,6 @@ int main()
     cin >> u >> v >> w;
     adj[u].push_back(make_pair(v, w));
     adj[v].push_back(make_pair(u, w));
-  }
-  for (int i = 0; i < k; i++)
-  {
-    cin >> v >> w;
-    adj[1].push_back(make_pair(v, w));
-    adj[1].push_back(make_pair(u, w));
   }
   fill(dist, dist + n + 1, -1);
 
